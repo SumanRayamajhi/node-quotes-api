@@ -1,14 +1,17 @@
 const express = require("express");
 const app = express();
 
-const quotes = require("./quotes.json");
+// PROJECT IMPORTS
+const api = require("./api");
+const webapi = api();
 
-app.get('/', function(request, response) {
-  response.send('/quotes/17 should return one quote, by id')
-});
+// MIDDLEWARES
+app.use(express.json());
+app.get("/quotes", webapi.getQuotes);
+app.get("/quotes/:quoteId", webapi.getQuoteById);
+app.post("/quotes", webapi.saveQuote);
+app.put("/quotes/:quoteId", webapi.editQuoteById);
+app.delete("/quotes/:quoteId", webapi.deleteQuoteById);
 
-app.get("/quotes", function(request, response){
-  response.json(quotes);
-});
-
+// START EXPRESS-SERVER
 app.listen(3000, () => console.log("Listening on port 3000"));
